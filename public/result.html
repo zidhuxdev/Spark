@@ -654,6 +654,8 @@ display: none;
     <div class="names-strip" id="names-strip">— &amp; —</div>
 
     <div class="gift-area" onclick="openGift()">
+      <audio id="giftMusic" src="https://v1.pinimg.com/videos/mc/hls/9b/7f/f5/9b7ff5cf81ec5c8a9243f2ba722f29e6_audio.m3u8" loop></audio>
+
       <div class="gift">
         <div class="gift-lid2">
           <div class="bow">
@@ -698,7 +700,7 @@ display: none;
       </div>
       <div class="letter-sig" id="l-sig">— always, ___</div>
       <button class="next-btn" onclick="nextPopup()">open next ✦</button>
-      <div class="tape tape-btm" style="background:var(--orange)"></div>
+     
     </div>
   </div>
 
@@ -953,10 +955,14 @@ function showPopup(i){
   cur = i;
 }
 
-function openGift(){
+function openGift() {
+  // 🎵 Play music on same click
+  const music = document.getElementById('giftMusic');
+  music.play();
+
   document.getElementById('landing').classList.add('gone');
   document.getElementById('progress').classList.add('show');
-  setTimeout(()=> showPopup(0), 500);
+  setTimeout(() => showPopup(0), 500);
 }
 
 function nextPopup(){
