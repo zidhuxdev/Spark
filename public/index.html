@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spark - For your loved ones</title>
+
+    <style>
+        :root {
+            --cream: #f4eed8;
+            --ink: #1c1409;
+            --red: #e8200e;
+            --lime: #bef03c;
+            --blue: #2b36ff;
+            --orange: #ff6d00;
+            --paper: #fffae8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: var(--cream);
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f4eed8'/%3E%3Ccircle cx='1' cy='1' r='.4' fill='%23d4c8a0' opacity='.5'/%3E%3C/svg%3E");
+            font-family: 'Caveat', cursive;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpolygon points='10,1 12.6,7.4 19.5,7.6 14.2,12 16,18.8 10,14.8 4,18.8 5.8,12 0.5,7.6 7.4,7.4' fill='%231c1409' stroke='%231c1409' stroke-width='1'/%3E%3C/svg%3E") 10 10, auto;
+        }
+
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('Provicali.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'cursivexd';
+            src: url('Antigritas.ttf') format('truetype');
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-container {
+            justify-content: center;
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: yellowgreen;
+            color: #555555;
+            z-index: 10;
+        }
+
+        .logo {
+            width: 200px;
+            display: block;
+            position: fixed;
+            top: 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            margin-top: 200px;
+            line-height: 0;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .di {
+            display: block;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            pointer-events: none;
+        }
+
+        .dix {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            pointer-events: none;
+        }
+
+        .h1 {
+            font-family: 'CustomFont', Arial, sans-serif;
+            color: black;
+            font-size: 200px;
+            font-weight: 200;
+            margin-top: 30px;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .brx {
+            font-size: 25px;
+            color: #0048ffb7;
+            margin-top: 0;
+            font-family: 'cursivexd', Arial, Helvetica, sans-serif;
+        }
+
+        .container {
+            width: 500px;
+            margin: 40px auto 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border: none;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .text {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            padding: 14px 16px;
+            border: 3px solid #000000;
+            border-radius: 10px;
+            outline: none;
+            font-size: 22px;
+            transition: border-color 0.2s ease;
+            background: #fffdf4;
+        }
+
+        .text:focus {
+            border-color: #ff0000;
+        }
+
+        #err {
+            display: none;
+            color: #ff0000;
+            margin-top: 8px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-weight: 700;
+        }
+
+        .button-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .button {
+            cursor: pointer;
+            font-size: large;
+            font-family: inherit;
+            font-weight: bold;
+            color: #0011ff;
+            background-color: #f8f8fd;
+            padding: 0.8em 2.2em;
+            align-items: center;
+            text-align: center;
+            border-radius: 50em;
+            border: 6px solid #8b93f8;
+            box-shadow: 0 8px #1f35ff;
+        }
+
+        .button:active {
+            position: relative;
+            top: 8px;
+            border: 6px solid #646fff;
+            box-shadow: 0 0;
+        }
+
+        .button:hover {
+            background-color: #e0e0f8;
+            transform: translateY(-2px);
+        }
+
+        @media screen and (max-width: 768px) {
+            .h1 {
+                font-size: 100px;
+                margin-top: 35px;
+            }
+
+            .di,
+            .dix {
+                width: 150px;
+                margin-top: 40px;
+            }
+
+            .container {
+                width: 90%;
+                padding: 16px;
+            }
+
+            .brx {
+                margin-top: 10px;
+                font-size: 20px;
+            }
+
+            .logo {
+                width: 140px;
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <img src="zidhuxd-logo-black.svg" alt="Zidhuxd Logo" class="logo">
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <img src="di.png" alt="diamond logo" class="di">
+            <img src="di.png" alt="diamond logo" class="dix">
+
+            <h1 class="h1">Spark</h1>
+            <span class="brx">For your loved ones</span>
+        </section>
+
+        <section class="container">
+            <input class="text" id="uname" type="text" placeholder="Enter your name!" required>
+            <input class="text" id="pname" type="text" placeholder="Enter your Partner name!" required>
+
+            <div id="err">Please enter both names!</div>
+        </section>
+
+        <div class="button-wrap">
+            <button class="button" onclick="goSpark()">Create your Spark</button>
+        </div>
+    </main>
+
+    <script>
+        function makeSlug(text){
+            return text
+                .toLowerCase()
+                .trim()
+                .replace(/[^a-z0-9]+/g, '');
+        }
+
+        function goSpark(){
+            const user = document.getElementById('uname').value.trim();
+            const partner = document.getElementById('pname').value.trim();
+            const err = document.getElementById('err');
+
+            if(!user || !partner){
+                if(err) err.style.display = 'block';
+                return;
+            }
+
+            if(err) err.style.display = 'none';
+
+            const cleanUser = makeSlug(user);
+            const cleanPartner = makeSlug(partner);
+
+            if(!cleanUser || !cleanPartner){
+                if(err){
+                    err.innerText = 'Please use letters or numbers in both names!';
+                    err.style.display = 'block';
+                }
+                return;
+            }
+
+            const slug = `${cleanPartner}loves${cleanUser}`;
+            window.location.href = `/spark/${slug}`;
+        }
+
+        document.addEventListener('keydown', function(e){
+            if(e.key === 'Enter'){
+                goSpark();
+            }
+        });
+    </script>
+</body>
+</html>

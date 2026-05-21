@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --cream: #f4eed8;
+  --ink:   #1c1409;
+  --red:   #e8200e;
+  --lime:  #bef03c;
+  --blue:  #2b36ff;
+  --orange:#ff6d00;
+  --paper: #fffae8;
+}
+
+html,body{height:100%;overflow:hidden;}
+
+body{
+  background-color: var(--cream);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f4eed8'/%3E%3Ccircle cx='1' cy='1' r='.4' fill='%23d4c8a0' opacity='.5'/%3E%3C/svg%3E");
+  font-family:'Caveat',cursive;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpolygon points='10,1 12.6,7.4 19.5,7.6 14.2,12 16,18.8 10,14.8 4,18.8 5.8,12 0.5,7.6 7.4,7.4' fill='%231c1409' stroke='%231c1409' stroke-width='1'/%3E%3C/svg%3E") 10 10, auto;
+}
+
+/* ═══ STAR SVG DEFS ═══ */
+.star4{display:inline-block;}
+svg.s{overflow:visible;}
+
+/* ═══ LANDING ═══ */
+#landing{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:10;
+  transition:opacity .6s ease, visibility .6s ease;
+  overflow:hidden;
+}
+#landing.gone{opacity:0;visibility:hidden;pointer-events:none;}
+
+/* scattered bg stars */
+.bg-star{display: none;}
+
+.washi-top{
+  position:absolute;top:0;left:-4%;right:-4%;
+  height:28px;
+  background:var(--lime);
+  border-bottom:2.5px solid var(--ink);
+  transform:rotate(-.4deg);
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  overflow:hidden;
+}
+.washi-top span{font-family:'Archivo Black';font-size:11px;color:var(--ink);letter-spacing:.2em;}
+
+.washi-bottom{
+  position:absolute;bottom:0;left:-4%;right:-4%;
+  height:24px;
+  background:var(--red);
+  border-top:2.5px solid var(--ink);
+  transform:rotate(.3deg);
+}
+
+.landing-inner{
+  position:relative;
+  display:flex;flex-direction:column;
+  align-items:center;
+  gap:0;
+}
+
+.to-label{
+  font-family:'Caveat',cursive;
+  font-size:clamp(16px,3vw,20px);
+  font-weight:700;
+  color:var(--ink);
+  letter-spacing:.1em;
+  background:var(--lime);
+  padding:3px 14px;
+  border:2px solid var(--ink);
+  transform:rotate(-1.2deg);
+  margin-bottom:12px;
+}
+
+.spark-title{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(72px,20vw,200px);
+  color:var(--ink);
+  line-height:.9;
+  letter-spacing:-2px;
+  position:relative;
+}
+.spark-title::after{
+  content:'✦';
+  position:absolute;
+  top:-14px;right:-28px;
+  font-size:clamp(20px,4vw,40px);
+  color:var(--red);
+  animation:spin 8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.names-strip{
+  font-family:'Caveat';
+  font-size:clamp(22px,5vw,38px);
+  font-weight:700;
+  color:var(--paper);
+  background:var(--ink);
+  padding:6px 22px;
+  transform:rotate(-.8deg);
+  margin-top:10px;
+  letter-spacing:.05em;
+}
+.names-strip span{color:var(--lime);}
+
+/* gift box — pure CSS, no gradients */
+.gift-area{
+  margin-top:44px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  cursor:pointer;
+}
+.gift{
+  position:relative;
+  width:clamp(90px,16vw,140px);
+  height:clamp(80px,13vw,120px);
+}
+.gift-body{
+  position:absolute;bottom:0;left:0;right:0;
+  height:75%;
+  background:var(--red);
+  border:3px solid var(--ink);
+  border-top:none;
+}
+.gift-body::before{/* vertical ribbon */
+  content:'';position:absolute;left:50%;top:0;bottom:0;
+  width:14%;transform:translateX(-50%);
+  background:var(--paper);border-left:2px solid var(--ink);border-right:2px solid var(--ink);
+}
+.gift-lid2{
+  position:absolute;top:0;left:-4%;right:-4%;
+  height:32%;
+  background:var(--orange);
+  border:3px solid var(--ink);
+  transform-origin:center bottom;
+  transition:transform .4s cubic-bezier(.34,1.6,.64,1);
+}
+.gift-lid2::before{/* horizontal ribbon on lid */
+  content:'';position:absolute;top:50%;left:0;right:0;
+  height:35%;transform:translateY(-50%);
+  background:var(--paper);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+}
+/* bow */
+.bow{
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  display:flex;gap:2px;align-items:flex-end;
+  z-index:2;
+}
+.bow-l,.bow-r{
+  width:clamp(14px,2.5vw,22px);height:clamp(14px,2.5vw,22px);
+  background:var(--lime);
+  border:2.5px solid var(--ink);
+  border-radius:50% 50% 0 50%;
+}
+.bow-l{transform:rotate(-30deg);}
+.bow-r{transform:rotate(60deg) scaleX(-1);}
+.gift-area:hover .gift-lid2{transform:rotate(-28deg) translateY(-5px);}
+
+.open-hint{
+  font-family:'Caveat';font-weight:700;font-size:clamp(13px,2.5vw,17px);
+  color:var(--ink);letter-spacing:.05em;
+  background:var(--paper);
+  border:2px solid var(--ink);
+  padding:4px 14px;
+  transform:rotate(.8deg);
+  animation:wobble 2.5s ease-in-out infinite;
+}
+@keyframes wobble{
+  0%,100%{transform:rotate(.8deg);}
+  50%{transform:rotate(-.8deg);}
+}
+
+/* ═══ PROGRESS ═══ */
+#progress{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  display:flex;gap:10px;z-index:300;
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+#progress.show{opacity:1;}
+.dot{
+  width:8px;height:8px;
+  background:var(--ink);opacity:.2;
+  clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  transition:opacity .3s,transform .3s;
+}
+.dot.on{opacity:1;transform:scale(1.6);}
+
+/* ═══ POPUP LAYER ═══ */
+#popup-layer{position:fixed;inset:0;z-index:100;pointer-events:none;}
+
+.popup{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .45s ease, visibility .45s ease;
+}
+.popup.active{opacity:1;visibility:visible;pointer-events:all;}
+.popup::before{
+  content:'';position:fixed;inset:0;
+  background:rgba(28,20,9,.7);
+  z-index:-1;
+}
+
+/* card base */
+.card{
+  position:relative;
+  width:min(94vw,600px);
+  max-height:88dvh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  border:3px solid var(--ink);
+  background:var(--paper);
+  transform:translateY(24px) rotate(-.4deg);
+  transition:transform .45s cubic-bezier(.34,1.4,.64,1) .05s;
+  padding:clamp(24px,5vw,44px) clamp(20px,5vw,42px);
+  text-align:center;
+}
+.popup.active .card{transform:translateY(0) rotate(0deg);}
+
+/* scrollbar */
+.card::-webkit-scrollbar{width:6px;}
+.card::-webkit-scrollbar-track{background:var(--cream);}
+.card::-webkit-scrollbar-thumb{background:var(--ink);}
+
+/* washi tape on cards */
+.tape{
+  position:absolute;
+  height:18px;left:50%;
+  transform:translateX(-50%);
+  border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);
+}
+.tape-top{top:-9px;width:70px;}
+.tape-btm{bottom:-9px;width:90px;}
+
+/* next button */
+.next-btn{
+  display:inline-block;
+  margin-top:28px;
+  font-family:'Archivo Black';
+  font-size:clamp(12px,2vw,14px);
+  letter-spacing:.1em;
+  color:var(--paper);
+  background:var(--ink);
+  border:2.5px solid var(--ink);
+  padding:10px 26px;
+  cursor:pointer;
+  transition:transform .1s, background .1s, color .1s;
+  text-transform:uppercase;
+}
+.next-btn:hover{background:var(--paper);color:var(--ink);}
+.next-btn:active{transform:scale(.97);}
+
+/* star row helper */
+.star-row{display:flex;justify-content:center;gap:8px;margin:10px 0;}
+.star-row svg{flex-shrink:0;}
+
+/* ════════════ P1 — LETTER ════════════ */
+#p1 .card{background:var(--paper);}
+#p1 .tape-top{background:var(--lime);}
+#p1 .tape-btm{background:var(--orange);}
+
+.letter-badge{
+  display:inline-block;
+  font-family:'Archivo Black';font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;
+  background:var(--red);color:var(--paper);
+  border:2px solid var(--ink);
+  padding:3px 12px;
+  margin-bottom:14px;
+}
+.letter-dear{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(28px,5vw,40px);
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.letter-body{
+  font-family:'Instrument Serif';font-style:italic;
+  font-size:clamp(16px,2.5vw,20px);
+  line-height:1.75;color:var(--ink);
+}
+.letter-sig{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(22px,4vw,32px);
+  color:var(--red);margin-top:18px;
+}
+/* stamp corner */
+.stamp{
+  position:absolute;top:16px;right:16px;
+  width:42px;height:52px;
+  background:var(--blue);
+  border:2.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--paper);font-size:22px;
+}
+
+/* ════════════ P2 — STAR-FRAME POLAROIDS ════════════ */
+#p2 .card{background:var(--cream);}
+#p2 .tape-top{background:var(--blue);width:60px;}
+
+.p2-headline{
+  font-family:'Archivo Black';font-size:clamp(22px,4.5vw,34px);
+  color:var(--ink);margin-bottom:20px;
+  text-transform:uppercase;letter-spacing:-.5px;
+}
+
+.star-frame-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+/* the actual star frame from Pinterest ref */
+.sframe{
+  background:var(--paper);
+  padding:0;
+  border:2.5px solid var(--ink);
+  position:relative;
+  transform:rotate(var(--rot));
+  transition:transform .2s;
+}
+.sframe:hover{transform:rotate(0deg) scale(1.04);}
+.sframe-border{
+  /* star border drawn as repeating pattern */
+  width:100%;
+  padding:10px;
+  position:relative;
+}
+.sframe-border::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpolygon points='9,1 10.5,6.5 16,6.8 11.8,10.5 13.2,16 9,12.8 4.8,16 6.2,10.5 2,6.8 7.5,6.5' fill='%231c1409'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpolygon points='9,1 10.5,6.5 16,6.8 11.8,10.5 13.2,16 9,12.8 4.8,16 6.2,10.5 2,6.8 7.5,6.5' fill='%231c1409'/%3E%3C/svg%3E");
+  /* we just use a solid star-patterned border via outline trick */
+  border:12px solid transparent;
+  background-clip:padding-box;
+  z-index:0;
+}
+.sframe-inner{
+  aspect-ratio:4/3;
+  background:var(--cream);
+  border:2px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(28px,5vw,40px);
+  position:relative;
+  z-index:1;
+  margin:10px;
+}
+.sframe-caption{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(12px,2vw,15px);
+  color:var(--ink);
+  padding:4px 8px 8px;
+  letter-spacing:.05em;
+  text-align:center;
+}
+
+/* ════════════ P3 — REASONS ════════════ */
+#p3 .card{background:var(--paper);transform:translateY(24px) rotate(.5deg);}
+#p3 .tape-top{background:var(--red);width:80px;}
+
+.r-headline{
+  font-family:'Archivo Black';
+  font-size:clamp(24px,5vw,38px);
+  color:var(--ink);margin-bottom:4px;
+  letter-spacing:-1px;
+}
+.r-sub{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(14px,2.5vw,17px);
+  color:var(--red);
+  margin-bottom:22px;letter-spacing:.05em;
+}
+.reason-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 0;border-bottom:2px dashed var(--ink);
+  text-align:left;
+  opacity:0;transform:translateX(-14px);
+  transition:opacity .4s, transform .4s;
+}
+.popup.active .reason-item{opacity:1;transform:translateX(0);}
+.reason-item:nth-child(1){transition-delay:.1s}
+.reason-item:nth-child(2){transition-delay:.2s}
+.reason-item:nth-child(3){transition-delay:.3s}
+.reason-item:nth-child(4){transition-delay:.4s}
+.reason-item:nth-child(5){transition-delay:.5s}
+.r-num{
+  font-family:'Archivo Black';font-size:clamp(26px,5vw,38px);
+  color:var(--ink);opacity:.12;flex-shrink:0;line-height:1;
+}
+.r-text{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(17px,3vw,22px);
+  color:var(--ink);line-height:1.4;padding-top:4px;
+}
+
+/* ════════════ P4 — TIMELINE ════════════ */
+#p4 .card{background:var(--ink);border-color:var(--lime);}
+#p4 .tape-top{background:var(--lime);width:65px;}
+#p4 .next-btn{background:var(--lime);color:var(--ink);border-color:var(--lime);}
+#p4 .next-btn:hover{background:var(--ink);color:var(--lime);}
+
+.tl-headline{
+  font-family:'Archivo Black';
+  font-size:clamp(20px,4vw,30px);
+  color:var(--paper);margin-bottom:24px;
+  text-transform:uppercase;letter-spacing:-1px;
+}
+
+.tl-wrap{position:relative;padding-left:32px;text-align:left;}
+.tl-wrap::before{
+  content:'';position:absolute;left:10px;top:0;bottom:0;
+  width:2px;background:var(--lime);
+}
+.tl-entry{
+  position:relative;margin-bottom:20px;
+  opacity:0;transform:translateY(12px);
+  transition:opacity .4s,transform .4s;
+}
+.popup.active .tl-entry{opacity:1;transform:translateY(0);}
+.tl-entry:nth-child(1){transition-delay:.15s}
+.tl-entry:nth-child(2){transition-delay:.3s}
+.tl-entry:nth-child(3){transition-delay:.45s}
+.tl-entry:nth-child(4){transition-delay:.6s}
+.tl-entry::before{
+  content:'✦';position:absolute;
+  left:-28px;top:0;
+  font-size:13px;color:var(--lime);
+  line-height:1.3;
+}
+.tl-ch{
+  font-family:'Archivo Black';font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--lime);margin-bottom:3px;
+}
+.tl-text{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(16px,2.5vw,19px);
+  color:var(--paper);line-height:1.5;
+}
+
+/* ════════════ P5 — PROMISES ════════════ */
+#p5 .card{background:var(--cream);transform:translateY(24px) rotate(-.6deg);}
+#p5 .tape-top{background:var(--orange);width:75px;}
+#p5 .next-btn{background:var(--red);border-color:var(--red);}
+#p5 .next-btn:hover{background:var(--paper);color:var(--red);}
+
+.pr-icon{font-size:clamp(36px,7vw,52px);margin-bottom:10px;}
+.pr-headline{
+  font-family:'Archivo Black';
+  font-size:clamp(22px,4.5vw,34px);
+  color:var(--ink);margin-bottom:22px;
+  text-transform:uppercase;
+}
+.promise-item{
+  display:flex;align-items:baseline;gap:10px;
+  padding:10px 0;border-bottom:2px solid var(--ink);
+  text-align:left;
+  opacity:0;transform:translateX(12px);
+  transition:opacity .4s,transform .4s;
+}
+.popup.active .promise-item{opacity:1;transform:translateX(0);}
+.promise-item:nth-child(1){transition-delay:.1s}
+.promise-item:nth-child(2){transition-delay:.22s}
+.promise-item:nth-child(3){transition-delay:.34s}
+.promise-item:nth-child(4){transition-delay:.46s}
+.promise-item:nth-child(5){transition-delay:.58s}
+.pr-star{color:var(--red);font-size:13px;flex-shrink:0;}
+.pr-text{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(16px,2.5vw,20px);
+  color:var(--ink);line-height:1.4;
+}
+
+/* ════════════ P6 — PLAYLIST / CASSETTE ════════════ */
+#p6 .card{background:var(--ink);}
+#p6 .tape-top{background:var(--orange);width:70px;}
+#p6 .next-btn{background:var(--orange);color:var(--ink);border-color:var(--orange);}
+#p6 .next-btn:hover{background:var(--ink);color:var(--orange);}
+
+/* cassette tape header */
+.cassette{
+  width:min(85%,280px);margin:0 auto 20px;
+  background:var(--paper);
+  border:3px solid var(--paper);
+  padding:10px 14px;
+  position:relative;
+}
+.cassette-label{
+  background:var(--lime);
+  border:2px solid var(--ink);
+  padding:8px 10px;
+  position:relative;
+}
+.cassette-title{
+  font-family:'Archivo Black';font-size:clamp(13px,2.5vw,16px);
+  color:var(--ink);letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.cassette-sub{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(11px,2vw,13px);
+  color:var(--ink);opacity:.6;
+}
+.cassette-reels{
+  display:flex;justify-content:space-between;
+  margin-top:8px;padding:0 16px;
+}
+.reel{
+  width:28px;height:28px;
+  border:3px solid var(--ink);
+  border-radius:50%;
+  background:var(--paper);
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.reel::before{
+  content:'';width:8px;height:8px;
+  background:var(--ink);border-radius:50%;
+}
+
+.track{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 0;border-bottom:1.5px solid #ffffff15;
+  text-align:left;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .35s,transform .35s;
+}
+.popup.active .track{opacity:1;transform:translateY(0);}
+.track:nth-child(1){transition-delay:.1s}
+.track:nth-child(2){transition-delay:.2s}
+.track:nth-child(3){transition-delay:.3s}
+.track:nth-child(4){transition-delay:.4s}
+.track:nth-child(5){transition-delay:.5s}
+.track-n{
+  font-family:'Archivo Black';font-size:10px;
+  color:var(--lime);width:16px;flex-shrink:0;
+}
+.track-sq{
+  width:32px;height:32px;flex-shrink:0;
+  border:2px solid var(--paper);
+  background:var(--r-bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+}
+.track-info{flex:1;min-width:0;}
+.track-name{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(14px,2.5vw,17px);
+  color:var(--paper);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.track-artist{
+  font-family:'Caveat';font-size:clamp(11px,2vw,13px);
+  color:#ffffff60;
+}
+.track-dot{color:var(--red);font-size:13px;}
+
+/* ════════════ P7 — FINAL ════════════ */
+#p7 .card{
+  background:var(--red);
+  border-color:var(--paper);
+  text-align:center;
+  overflow:visible;
+}
+#p7 .tape-top{background:var(--paper);width:80px;}
+#p7 .next-btn{background:var(--paper);color:var(--ink);border-color:var(--paper);}
+#p7 .next-btn:hover{background:var(--ink);color:var(--paper);}
+
+.final-word{
+  font-family:'Archivo Black';
+  font-size:clamp(56px,18vw,160px);
+  color:var(--paper);
+  line-height:.85;
+  letter-spacing:-3px;
+  position:relative;
+  display:inline-block;
+}
+/* starburst outline text effect */
+.final-word::before{
+  content:attr(data-t);
+  position:absolute;inset:0;
+  -webkit-text-stroke:8px var(--ink);
+  color:transparent;
+  z-index:-1;
+}
+
+.final-sub{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(18px,3.5vw,26px);
+  color:var(--paper);margin-top:16px;line-height:1.5;
+  text-decoration:underline;text-underline-offset:4px;
+}
+.final-from{
+  font-family:'Instrument Serif';font-style:italic;
+  font-size:clamp(15px,2.5vw,19px);
+  color:#ffffff99;margin-top:10px;
+}
+
+/* floating stars on final */
+.fs{position:absolute;animation:floatS ease-in-out infinite;}
+@keyframes floatS{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-14px) rotate(180deg);}
+}
+
+@media  screen and (max-width:732px)
+{
+  .washi-top {
+
+display: none;
+  } 
+}
+</style>
+</head>
+<body>
+
+<!-- SVG star defs -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="star4pt" viewBox="0 0 20 20">
+      <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="currentColor"/>
+    </symbol>
+    <symbol id="star5pt" viewBox="0 0 20 20">
+      <polygon points="10,1 12.2,7.2 18.8,7.2 13.5,11.4 15.6,17.6 10,13.4 4.4,17.6 6.5,11.4 1.2,7.2 7.8,7.2" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ═══ LANDING ═══ -->
+<div id="landing">
+  <!-- washi strips -->
+  <div class="washi-top">
+    <span>✦ SPARK ✦ FOR YOU ✦ SPARK ✦ FOR YOU ✦ SPARK ✦ FOR YOU ✦</span>
+  </div>
+  <div class="washi-bottom"></div>
+
+  <div class="landing-inner">
+    <div class="to-label" id="to-label">✦ for someone special ✦</div>
+    <div class="spark-title">Spark</div>
+    <div class="names-strip" id="names-strip">— &amp; —</div>
+
+    <div class="gift-area" onclick="openGift()">
+      <div class="gift">
+        <div class="gift-lid2">
+          <div class="bow">
+            <div class="bow-l"></div>
+            <div class="bow-r"></div>
+          </div>
+        </div>
+        <div class="gift-body"></div>
+      </div>
+      <div class="open-hint">✦ tap to open your gift ✦</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PROGRESS ═══ -->
+<div id="progress">
+  <div class="dot" id="d0"></div><div class="dot" id="d1"></div>
+  <div class="dot" id="d2"></div><div class="dot" id="d3"></div>
+  <div class="dot" id="d4"></div><div class="dot" id="d5"></div>
+  <div class="dot" id="d6"></div>
+</div>
+
+<!-- ═══ POPUPS ═══ -->
+<div id="popup-layer">
+
+  <!-- ── P1: LETTER ── -->
+  <div class="popup" id="p1">
+    <div class="card">
+      <div class="tape tape-top" style="background:var(--lime)"></div>
+      <div class="stamp">💌</div>
+      <div class="letter-badge">a letter</div>
+      <div class="letter-dear" id="l-dear">Dear —,</div>
+      <div class="letter-body" id="l-body">
+        I made this because some feelings are too big for a text message.<br><br>
+        You make the ordinary feel like something worth saving —<br>
+        the kind of thing you'd press in a book to keep forever.
+      </div>
+      <div class="star-row">
+        <svg width="14" height="14" style="color:var(--red)"><use href="#star4pt"/></svg>
+        <svg width="10" height="10" style="color:var(--ink)"><use href="#star5pt"/></svg>
+        <svg width="14" height="14" style="color:var(--orange)"><use href="#star4pt"/></svg>
+      </div>
+      <div class="letter-sig" id="l-sig">— always, ___</div>
+      <button class="next-btn" onclick="nextPopup()">open next ✦</button>
+      <div class="tape tape-btm" style="background:var(--orange)"></div>
+    </div>
+  </div>
+
+  <!-- ── P2: STAR-FRAME POLAROIDS ── -->
+  <div class="popup" id="p2">
+    <div class="card" style="background:var(--cream);">
+      <div class="tape tape-top" style="background:var(--blue)"></div>
+      <div class="p2-headline" id="p2-h">our little universe</div>
+      <div class="star-frame-grid">
+        <div class="sframe" style="--rot:-2.5deg">
+          <div style="padding:8px;background:var(--paper);">
+            <!-- star border: CSS repeating pattern -->
+            <div style="border:8px solid transparent;background-image:repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px),repeating-linear-gradient(0deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px);background-clip:border-box;padding:4px;position:relative;">
+              <div class="sframe-inner">🌅</div>
+            </div>
+          </div>
+          <div class="sframe-caption">first sunrise</div>
+        </div>
+        <div class="sframe" style="--rot:1.8deg">
+          <div style="padding:8px;background:var(--paper);">
+            <div style="border:8px solid transparent;background-image:repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px),repeating-linear-gradient(0deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px);background-clip:border-box;padding:4px;">
+              <div class="sframe-inner">☕</div>
+            </div>
+          </div>
+          <div class="sframe-caption">quiet mornings</div>
+        </div>
+        <div class="sframe" style="--rot:-1.2deg">
+          <div style="padding:8px;background:var(--paper);">
+            <div style="border:8px solid transparent;background-image:repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px),repeating-linear-gradient(0deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px);background-clip:border-box;padding:4px;">
+              <div class="sframe-inner">🌧️</div>
+            </div>
+          </div>
+          <div class="sframe-caption">rainy days in</div>
+        </div>
+        <div class="sframe" style="--rot:2.2deg">
+          <div style="padding:8px;background:var(--paper);">
+            <div style="border:8px solid transparent;background-image:repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px),repeating-linear-gradient(0deg,var(--ink) 0,var(--ink) 2px,transparent 2px,transparent 18px);background-clip:border-box;padding:4px;">
+              <div class="sframe-inner">🌙</div>
+            </div>
+          </div>
+          <div class="sframe-caption">late night calls</div>
+        </div>
+      </div>
+      <button class="next-btn" onclick="nextPopup()" style="margin-top:20px;">keep going ✦</button>
+      <div class="tape tape-btm" style="background:var(--red)"></div>
+    </div>
+  </div>
+
+  <!-- ── P3: REASONS ── -->
+  <div class="popup" id="p3">
+    <div class="card">
+      <div class="tape tape-top" style="background:var(--red)"></div>
+      <div class="r-headline" id="r-h">why i love you</div>
+      <div class="r-sub" id="r-sub">a list that could go on forever, ___</div>
+      <div>
+        <div class="reason-item"><span class="r-num">01</span><span class="r-text" id="r1t">___, the way your eyes light up when you talk about things you love</span></div>
+        <div class="reason-item"><span class="r-num">02</span><span class="r-text">how you make every ordinary moment feel like a core memory</span></div>
+        <div class="reason-item"><span class="r-num">03</span><span class="r-text">your laugh — it's genuinely my favourite sound in the world</span></div>
+        <div class="reason-item"><span class="r-num">04</span><span class="r-text">the way you care so deeply, even when you pretend not to</span></div>
+        <div class="reason-item"><span class="r-num">05</span><span class="r-text">simply being <em>you</em> — that's more than enough ✦</span></div>
+      </div>
+      <button class="next-btn" onclick="nextPopup()">there's more ✦</button>
+      <div class="tape tape-btm" style="background:var(--lime)"></div>
+    </div>
+  </div>
+
+  <!-- ── P4: TIMELINE ── -->
+  <div class="popup" id="p4">
+    <div class="card" style="background:var(--ink);border-color:var(--lime);">
+      <div class="tape tape-top" style="background:var(--lime)"></div>
+      <div class="tl-headline">our story so far ✦</div>
+      <div class="tl-wrap">
+        <div class="tl-entry">
+          <div class="tl-ch">chapter 01</div>
+          <div class="tl-text" id="tl1">The first time I saw <span class="tln"></span> — something shifted. I just didn't know it yet.</div>
+        </div>
+        <div class="tl-entry">
+          <div class="tl-ch">chapter 02</div>
+          <div class="tl-text">That moment we laughed until it hurt. I knew you were different then.</div>
+        </div>
+        <div class="tl-entry">
+          <div class="tl-ch">chapter 03</div>
+          <div class="tl-text">Quiet evenings. Long calls. Little notes. Slowly becoming everything.</div>
+        </div>
+        <div class="tl-entry">
+          <div class="tl-ch">right now ✦</div>
+          <div class="tl-text">This page, made just for <span class="tln"></span>. Because you deserve to feel loved today.</div>
+        </div>
+      </div>
+      <button class="next-btn" onclick="nextPopup()" style="background:var(--lime);color:var(--ink);border-color:var(--lime);">still more ✦</button>
+      <div class="tape tape-btm" style="background:var(--lime)"></div>
+    </div>
+  </div>
+
+  <!-- ── P5: PROMISES ── -->
+  <div class="popup" id="p5">
+    <div class="card" style="background:var(--cream);">
+      <div class="tape tape-top" style="background:var(--orange)"></div>
+      <div class="pr-icon">🤝</div>
+      <div class="pr-headline" id="pr-h">my promises to you</div>
+      <div>
+        <div class="promise-item"><span class="pr-star">✦</span><span class="pr-text">I'll always be your safe place to land</span></div>
+        <div class="promise-item"><span class="pr-star">✦</span><span class="pr-text">I'll celebrate every small win like it's the biggest deal</span></div>
+        <div class="promise-item"><span class="pr-star">✦</span><span class="pr-text">I'll never let you feel alone in the hard moments</span></div>
+        <div class="promise-item"><span class="pr-star">✦</span><span class="pr-text">I'll keep choosing you, every single day</span></div>
+        <div class="promise-item"><span class="pr-star">✦</span><span class="pr-text">I promise to keep making you smile, however I can</span></div>
+      </div>
+      <button class="next-btn" onclick="nextPopup()" style="background:var(--red);border-color:var(--red);">one more ✦</button>
+      <div class="tape tape-btm" style="background:var(--blue)"></div>
+    </div>
+  </div>
+
+  <!-- ── P6: PLAYLIST / CASSETTE ── -->
+  <div class="popup" id="p6">
+    <div class="card" style="background:var(--ink);">
+      <div class="tape tape-top" style="background:var(--orange)"></div>
+      <div class="cassette">
+        <div class="cassette-label">
+          <div class="cassette-title" id="pl-title">songs that remind me of ___</div>
+          <div class="cassette-sub">side A — forever playlist ✦</div>
+        </div>
+        <div class="cassette-reels">
+          <div class="reel"></div>
+          <div class="reel"></div>
+        </div>
+      </div>
+      <div id="tracks">
+        <div class="track"><span class="track-n">A1</span><div class="track-sq" style="--r-bg:var(--red)">🎵</div><div class="track-info"><div class="track-name">Lover</div><div class="track-artist">Taylor Swift</div></div><span class="track-dot">✦</span></div>
+        <div class="track"><span class="track-n">A2</span><div class="track-sq" style="--r-bg:var(--blue)">🎵</div><div class="track-info"><div class="track-name">Bloom</div><div class="track-artist">The Paper Kites</div></div><span class="track-dot">✦</span></div>
+        <div class="track"><span class="track-n">A3</span><div class="track-sq" style="--r-bg:var(--orange)">🎵</div><div class="track-info"><div class="track-name">Can't Help Falling in Love</div><div class="track-artist">Elvis Presley</div></div><span class="track-dot">✦</span></div>
+        <div class="track"><span class="track-n">A4</span><div class="track-sq" style="--r-bg:#2a8a40">🎵</div><div class="track-info"><div class="track-name">All of Me</div><div class="track-artist">John Legend</div></div><span class="track-dot">✦</span></div>
+        <div class="track"><span class="track-n">A5</span><div class="track-sq" style="--r-bg:var(--lime)">🎵</div><div class="track-info"><div class="track-name">Die with a Smile</div><div class="track-artist">Bruno Mars & Lady Gaga</div></div><span class="track-dot">✦</span></div>
+      </div>
+      <button class="next-btn" onclick="nextPopup()" style="background:var(--orange);color:var(--ink);border-color:var(--orange);">last one ✦</button>
+      <div class="tape tape-btm" style="background:var(--lime)"></div>
+    </div>
+  </div>
+
+  <!-- ── P7: FINAL ── -->
+  <div class="popup" id="p7">
+    <div class="card" style="background:var(--red);border-color:var(--paper);">
+      <div class="tape tape-top" style="background:var(--paper)"></div>
+
+      <!-- floating bg stars -->
+      <svg class="fs" style="top:10%;left:8%;color:var(--paper);opacity:.3;animation-duration:3s;" width="22" height="22"><use href="#star4pt"/></svg>
+      <svg class="fs" style="top:20%;right:10%;color:var(--paper);opacity:.4;animation-duration:4s;animation-delay:.5s;" width="16" height="16"><use href="#star5pt"/></svg>
+      <svg class="fs" style="bottom:22%;left:12%;color:var(--paper);opacity:.25;animation-duration:3.5s;animation-delay:1s;" width="28" height="28"><use href="#star4pt"/></svg>
+      <svg class="fs" style="bottom:15%;right:8%;color:var(--ink);opacity:.3;animation-duration:2.8s;" width="18" height="18"><use href="#star5pt"/></svg>
+
+      <div class="final-word" data-t="I love you." id="final-word">I love you.</div>
+      <div class="final-sub" id="final-sub">always have. always will, ___.</div>
+      <div class="final-from" id="final-from">— with everything, ___</div>
+
+      <div class="star-row" style="margin-top:20px;">
+        <svg width="16" height="16" style="color:var(--paper)"><use href="#star4pt"/></svg>
+        <svg width="12" height="12" style="color:var(--ink)"><use href="#star5pt"/></svg>
+        <svg width="16" height="16" style="color:var(--paper)"><use href="#star4pt"/></svg>
+      </div>
+      <button class="next-btn" onclick="restart()" style="background:var(--paper);color:var(--ink);border-color:var(--paper);">start over ↺</button>
+      <div class="tape tape-btm" style="background:var(--paper)"></div>
+    </div>
+  </div>
+
+</div><!-- /popup-layer -->
+
+<script>
+// ─── CLEAN URL / OLD QUERY SUPPORT ───
+function titleName(name){
+  return String(name || '')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ')
+    .map(part => part ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : '')
+    .join(' ');
+}
+
+function getSparkNames(){
+  // Old support: result.html?user=sidhu&partner=soha
+  const params = new URLSearchParams(location.search);
+  const queryUser = params.get('user');
+  const queryPartner = params.get('partner');
+
+  if(queryUser && queryPartner){
+    return {
+      user: titleName(queryUser),
+      partner: titleName(queryPartner)
+    };
+  }
+
+  // New clean Vercel URL support: /spark/sohalovessidhu
+  const parts = location.pathname.split('/').filter(Boolean);
+  const slug = parts[parts.length - 1] || '';
+  const marker = 'loves';
+  const markerIndex = slug.toLowerCase().indexOf(marker);
+
+  if(markerIndex !== -1){
+    const partnerRaw = slug.slice(0, markerIndex);
+    const userRaw = slug.slice(markerIndex + marker.length);
+
+    if(partnerRaw && userRaw){
+      return {
+        user: titleName(decodeURIComponent(userRaw)),
+        partner: titleName(decodeURIComponent(partnerRaw))
+      };
+    }
+  }
+
+  return {
+    user: 'Someone',
+    partner: 'You'
+  };
+}
+
+const sparkNames = getSparkNames();
+const USER = sparkNames.user;
+const PARTNER = sparkNames.partner;
+
+// ─── INJECT ───
+document.getElementById('to-label').textContent = `✦ for ${PARTNER} ✦ from ${USER} ✦`;
+
+const namesStrip = document.getElementById('names-strip');
+namesStrip.textContent = `${USER} `;
+const partnerSpan = document.createElement('span');
+partnerSpan.textContent = `& ${PARTNER}`;
+namesStrip.appendChild(partnerSpan);
+
+document.getElementById('l-dear').textContent     = `Dear ${PARTNER},`;
+document.getElementById('l-sig').textContent      = `— always, ${USER}`;
+document.getElementById('p2-h').textContent       = `${USER} & ${PARTNER}'s universe`;
+document.getElementById('r-h').textContent        = `why i love you, ${PARTNER}`;
+document.getElementById('r-sub').textContent      = `a list that could go on forever, ${PARTNER} ✦`;
+document.getElementById('r1t').textContent        = `${PARTNER}, the way your eyes light up when you talk about things you love`;
+document.querySelectorAll('.tln').forEach(el => el.textContent = PARTNER);
+document.getElementById('pr-h').textContent       = `my promises to you, ${PARTNER}`;
+document.getElementById('pl-title').textContent   = `songs that remind me of ${PARTNER}`;
+document.getElementById('final-word').textContent = `I love you.`;
+document.getElementById('final-word').setAttribute('data-t', `I love you.`);
+document.getElementById('final-sub').textContent  = `always have. always will, ${PARTNER}.`;
+document.getElementById('final-from').textContent = `— with everything, ${USER}`;
+
+// ─── POPUP STATE ───
+const popIDs = ['p1','p2','p3','p4','p5','p6','p7'];
+let cur = -1;
+
+function showPopup(i){
+  popIDs.forEach((id,j) => {
+    const el = document.getElementById(id);
+    el.classList.toggle('active', j === i);
+  });
+  document.querySelectorAll('.dot').forEach((d,j) => d.classList.toggle('on', j === i));
+  cur = i;
+}
+
+function openGift(){
+  document.getElementById('landing').classList.add('gone');
+  document.getElementById('progress').classList.add('show');
+  setTimeout(()=> showPopup(0), 500);
+}
+
+function nextPopup(){
+  if(cur < popIDs.length - 1) showPopup(cur + 1);
+}
+
+function restart(){
+  showPopup(-1);
+  document.querySelectorAll('.dot').forEach(d => d.classList.remove('on'));
+  document.getElementById('progress').classList.remove('show');
+  setTimeout(()=>{
+    document.getElementById('landing').classList.remove('gone');
+  }, 200);
+}
+
+// keyboard nav
+document.addEventListener('keydown', e => {
+  if(e.key === 'ArrowRight' || e.key === 'Enter') nextPopup();
+  if(e.key === 'Escape') restart();
+  if(e.key === 'ArrowLeft' && cur > 0) showPopup(cur - 1);
+});
+
+// swipe
+let tsx=0;
+document.addEventListener('touchstart', e => tsx = e.touches[0].clientX, {passive:true});
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tsx;
+  if(dx < -50) nextPopup();
+  if(dx > 50 && cur > 0) showPopup(cur-1);
+}, {passive:true});
+</script>
+</body>
+</html>

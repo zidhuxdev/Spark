@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spark ✦ For your loved ones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#f4eed8;
+  --ink:#1c1409;
+  --red:#e8200e;
+  --lime:#bef03c;
+  --blue:#2b36ff;
+  --orange:#ff6d00;
+  --paper:#fffae8;
+}
+html,body{height:100%;overflow:hidden;}
+body{
+  background-color:var(--cream);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23f4eed8'/%3E%3Ccircle cx='1' cy='1' r='.4' fill='%23d4c8a0' opacity='.5'/%3E%3C/svg%3E");
+  font-family:'Caveat',cursive;
+  display:flex;flex-direction:column;min-height:100dvh;
+  overflow:hidden;position:relative;
+}
+
+/* washi strips */
+.washi-top{
+  position:fixed;top:0;left:-2%;right:-2%;
+  height:26px;
+  background:var(--lime);
+  border-bottom:2.5px solid var(--ink);
+  z-index:20;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  transform:rotate(-.2deg);
+}
+.washi-top span{
+  font-family:'Archivo Black';font-size:10px;letter-spacing:.2em;
+  color:var(--ink);white-space:nowrap;
+  animation:scroll-txt 12s linear infinite;
+}
+@keyframes scroll-txt{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+.washi-btm{
+  position:fixed;bottom:0;left:-2%;right:-2%;
+  height:22px;background:var(--red);
+  border-top:2.5px solid var(--ink);z-index:20;transform:rotate(.2deg);
+}
+
+/* bg stars */
+.bgs{position:fixed;pointer-events:none;}
+
+/* MAIN LAYOUT */
+.page{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:46px 20px 36px;
+  gap:0;
+  position:relative;
+}
+
+/* HERO */
+.hero-block{
+  position:relative;
+  display:flex;flex-direction:column;
+  align-items:center;
+  gap:6px;
+}
+
+/* sticker tag */
+.sticker-tag{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(14px,3vw,18px);
+  background:var(--orange);
+  color:var(--paper);
+  border:2.5px solid var(--ink);
+  padding:3px 16px;
+  transform:rotate(-1.5deg);
+  display:inline-block;
+  box-shadow:2px 2px 0 var(--ink);
+  margin-bottom:4px;
+}
+
+.logo-row{
+  display:flex;align-items:center;gap:14px;
+}
+.logo-svg{
+  width:clamp(36px,7vw,52px);
+  height:auto;
+  flex-shrink:0;
+}
+.title-main{
+  font-family:'Archivo Black',sans-serif;
+  font-size:clamp(80px,22vw,210px);
+  color:var(--ink);
+  line-height:.85;
+  letter-spacing:-3px;
+  position:relative;
+}
+/* outline star */
+.title-main::after{
+  content:'✦';
+  position:absolute;
+  top:0;right:clamp(-20px,-4vw,-14px);
+  font-size:clamp(18px,4vw,36px);
+  color:var(--red);
+  animation:spin 10s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.subtitle{
+  font-family:'Instrument Serif';font-style:italic;
+  font-size:clamp(16px,3vw,22px);
+  color:var(--ink);
+  background:var(--paper);
+  border:2px solid var(--ink);
+  padding:4px 18px;
+  transform:rotate(.8deg);
+  display:inline-block;
+}
+
+/* FORM CARD */
+.form-card{
+  margin-top:clamp(16px,3vw,28px);
+  width:min(92vw,460px);
+  background:var(--paper);
+  border:3px solid var(--ink);
+  padding:clamp(18px,4vw,30px) clamp(16px,4vw,28px);
+  position:relative;
+  box-shadow:5px 5px 0 var(--ink);
+}
+/* tape on card */
+.tape-card{
+  position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+  width:70px;height:18px;
+  background:var(--blue);
+  border:1.5px solid var(--ink);
+}
+
+.field-label{
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(13px,2vw,15px);
+  letter-spacing:.05em;
+  color:var(--ink);
+  margin-bottom:4px;
+  margin-top:14px;
+}
+.field-label:first-of-type{margin-top:0;}
+
+.field{
+  width:100%;
+  font-family:'Caveat';font-weight:700;
+  font-size:clamp(18px,3vw,22px);
+  color:var(--ink);
+  background:var(--cream);
+  border:2.5px solid var(--ink);
+  padding:10px 14px;
+  outline:none;
+  transition:background .15s;
+}
+.field:focus{background:var(--lime);}
+.field::placeholder{color:var(--ink);opacity:.35;}
+
+/* BUTTON */
+.create-btn{
+  width:100%;
+  margin-top:18px;
+  font-family:'Archivo Black';
+  font-size:clamp(14px,2.5vw,17px);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--paper);
+  background:var(--ink);
+  border:3px solid var(--ink);
+  padding:clamp(12px,2vw,16px);
+  cursor:pointer;
+  box-shadow:4px 4px 0 var(--red);
+  transition:transform .1s, box-shadow .1s;
+  position:relative;
+}
+.create-btn:hover{box-shadow:6px 6px 0 var(--red);}
+.create-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--red);}
+.create-btn::after{content:' ✦';}
+
+/* error msg */
+.err{
+  font-family:'Caveat';font-weight:700;font-size:14px;
+  color:var(--red);margin-top:6px;
+  display:none;
+}
+.err.show{display:block;}
+
+/* made by */
+.madeby{
+  margin-top:14px;
+  font-family:'Caveat';font-size:13px;letter-spacing:.05em;
+  color:var(--ink);opacity:.4;
+}
+</style>
+</head>
+<body>
+
+<!-- washi -->
+<div class="washi-top">
+  <span>✦ SPARK ✦ FOR YOUR LOVED ONES ✦ SPARK ✦ FOR YOUR LOVED ONES ✦ SPARK ✦ FOR YOUR LOVED ONES ✦ SPARK ✦ FOR YOUR LOVED ONES ✦</span>
+</div>
+<div class="washi-btm"></div>
+
+<!-- bg stars -->
+<svg class="bgs" style="top:14%;left:5%;color:var(--ink);opacity:.09;transform:rotate(10deg);" width="54" height="54" viewBox="0 0 20 20"><polygon points="10,1 12.2,7.2 18.8,7.2 13.5,11.4 15.6,17.6 10,13.4 4.4,17.6 6.5,11.4 1.2,7.2 7.8,7.2" fill="currentColor"/></svg>
+<svg class="bgs" style="top:18%;right:7%;color:var(--red);opacity:.5;" width="22" height="22" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="currentColor"/></svg>
+<svg class="bgs" style="bottom:20%;left:4%;color:var(--ink);opacity:.12;" width="38" height="38" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="currentColor"/></svg>
+<svg class="bgs" style="bottom:25%;right:5%;color:var(--lime);opacity:.6;transform:rotate(20deg);" width="20" height="20" viewBox="0 0 20 20"><polygon points="10,1 12.2,7.2 18.8,7.2 13.5,11.4 15.6,17.6 10,13.4 4.4,17.6 6.5,11.4 1.2,7.2 7.8,7.2" fill="currentColor"/></svg>
+<svg class="bgs" style="top:48%;left:2%;color:var(--blue);opacity:.35;" width="16" height="16" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="currentColor"/></svg>
+<svg class="bgs" style="top:55%;right:3%;color:var(--orange);opacity:.4;" width="18" height="18" viewBox="0 0 20 20"><path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" fill="currentColor"/></svg>
+
+<div class="page">
+  <div class="hero-block">
+    <div class="sticker-tag">✦ a spark for your loved ones ✦</div>
+    <div class="title-main">Spark</div>
+    <div class="subtitle">make someone feel special today</div>
+  </div>
+
+  <div class="form-card">
+    <div class="tape-card"></div>
+
+    <div class="field-label">YOUR NAME</div>
+    <input class="field" id="uname" type="text" placeholder="your name...">
+
+    <div class="field-label">YOUR PARTNER'S NAME</div>
+    <input class="field" id="pname" type="text" placeholder="their name...">
+
+    <div class="err" id="err">✦ please fill in both names!</div>
+
+    <button class="create-btn" onclick="goSpark()">create your spark</button>
+  </div>
+
+  <div class="madeby">made with ✦ by @zidhuxd</div>
+</div>
+
+<script>
+function goSpark(){
+  const u = document.getElementById('uname').value.trim();
+  const p = document.getElementById('pname').value.trim();
+  const err = document.getElementById('err');
+  if(!u || !p){err.classList.add('show');return;}
+  err.classList.remove('show');
+  window.location.href = `result.html?user=${encodeURIComponent(u)}&partner=${encodeURIComponent(p)}`;
+}
+document.addEventListener('keydown', e => {if(e.key==='Enter') goSpark();});
+</script>
+</body>
+</html>

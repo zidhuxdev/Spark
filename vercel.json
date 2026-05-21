@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/spark/:slug",
+      "destination": "/result.html"
+    }
+  ]
+}
