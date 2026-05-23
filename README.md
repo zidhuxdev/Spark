@@ -12,7 +12,7 @@ With custom romantic typography, graceful animations, soft gradients, and memora
 
 ## 🚀 Live Demo
 
-**[Create Your Spark →](https://spark-theta-nine.vercel.app)**
+**[Create Your Spark →](https://zidhuxd.com/spark)**
 
 ## ✨ Key Features
 
@@ -46,29 +46,6 @@ Spark/
 ├── vercel.json
 └── README.md
 ```
-
-## 💻 Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/zidhuxdev/Spark.git
-cd Spark
-```
-
-### 2. Run Locally
-
-Open `public/index.html` directly in a browser, or run:
-
-```bash
-npx serve public
-```
-
-### 3. Deploy Instantly (Recommended)
-
-<a href="https://vercel.com/new/clone?repository-url=https://github.com/zidhuxdev/Spark">
-  <img src="https://vercel.com/button" alt="Deploy with Vercel">
-</a>
 
 ## 💌 How to Use
 
